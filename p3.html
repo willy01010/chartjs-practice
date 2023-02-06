@@ -1,0 +1,34 @@
+<!-- https://www.chartjs.org/docs/latest/getting-started/ -->
+<script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-database.js"></script>
+<script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyCQVU_rUnKl7dw6ZrzXF6j-HpSI_FZed1I",
+    authDomain: "cgu-project-autobrake.firebaseapp.com",
+    databaseURL: "https://cgu-project-autobrake-default-rtdb.firebaseio.com",
+    projectId: "cgu-project-autobrake",
+    storageBucket: "cgu-project-autobrake.appspot.com",
+    messagingSenderId: "173769029512",
+    appId: "1:173769029512:web:32878076ae1fa321e72c3d",
+    measurementId: "G-2YGCYR725J"
+};
+firebase.initializeApp(firebaseConfig);
+
+var db = firebase.database();//realtime database
+
+</script>
+
+
+
+<div>
+  <canvas id="myChart"></canvas>
+</div>
+
+<input id="line" type="number">
+<button onclick="getcargeojson(document.getElementById('line').value);">get</button>
+<button onclick="removeData();">removeData</button>
+<button onclick="removeDataset();">removeDataset</button>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="p3.js"></script>
