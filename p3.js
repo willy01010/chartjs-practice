@@ -1,8 +1,7 @@
 const ctx = document.getElementById('myChart');
-let initdataset = '';
 let mychart;
 
-
+var speed = [], time = [];
 var current = "";
 var on_off = "";
 
@@ -18,34 +17,28 @@ db.ref('on_off').on('value', (data) => {//取得目前車輛狀態，供GeoJson�
 
 });
 
-var speed = [], time = [];
+
 function getcargeojson(num = -1) {
   if (num == -1) {
     db.ref('CarGeoJson/_' + current).once('value', (data) => {//將GeoJson資料dowmload
-      // craline.setMap(null);
       speed = [], time = [];
       time = data.val().features[0].properties.times;
       speed = data.val().features[0].properties.speed;
-      init(time,'speed',speed);
+      init(time, 'speed', speed);
 
-
-
-      addDataset('battery', data.val().features[0].properties.battery, 'rgb(255, 99, 132)', 'rgb(255, 153, 153)','y1');
+      addDataset('battery', data.val().features[0].properties.battery, 'rgb(0, 153, 51)', 'rgb(0, 230, 77)', 'y1');
     });
-  } else{
+  } else {
 
-    db.ref('CarGeoJson/_' + num).once('value', (data) => {//將GeoJson資料dowmload
-      // craline.setMap(null);
+    db.ref('CarGeoJson/_' + num).once('value', (data) => {//將num的GeoJson資料dowmload
       clearChart();
 
       speed = [], time = [];
       time = data.val().features[0].properties.times;
       speed = data.val().features[0].properties.speed;
-      init(time,'speed',speed);
+      init(time, 'speed', speed);
 
-
-
-      addDataset('battery', data.val().features[0].properties.battery, 'rgb(255, 99, 132)', 'rgb(255, 153, 153)','y1');
+      addDataset('battery', data.val().features[0].properties.battery, 'rgb(0, 153, 51)', 'rgb(0, 230, 77)', 'y1');
     });
 
   }
@@ -57,9 +50,9 @@ function getcargeojson(num = -1) {
 
 
 
-function init(xlabel=[],dsName='',value=[]){
+function init(xlabel = [], dsName = '', value = []) {
 
-  if(dsName!=''){
+  if (dsName != '') {
 
     initdataset = {
       type: 'line',
@@ -79,7 +72,7 @@ function init(xlabel=[],dsName='',value=[]){
             title: {
               display: true,
               text: 'Time',
-              color: '#911',
+              color: '#000066',
               font: {
                 family: 'Comic Sans MS',
                 size: 20,
@@ -95,9 +88,9 @@ function init(xlabel=[],dsName='',value=[]){
             title: {
               display: true,
               text: 'Km/hr',
-              color: '#191',
+              color: '#000066',
               font: {
-                family: 'Times',
+                family: 'Comic Sans MS',
                 size: 20,
                 style: 'normal',
                 lineHeight: 1.2
@@ -105,18 +98,18 @@ function init(xlabel=[],dsName='',value=[]){
               padding: { top: 30, left: 0, right: 0, bottom: 0 }
             }
           },
-    
+
           y1: {
             display: true,
             position: 'right',
-            max:100,
-            min:0,
+            max: 100,
+            min: 0,
             title: {
               display: true,
               text: '%',
-              color: '#191',
+              color: '#000066',
               font: {
-                family: 'Times',
+                family: 'Comic Sans MS',
                 size: 20,
                 style: 'normal',
                 lineHeight: 1.2
@@ -124,22 +117,25 @@ function init(xlabel=[],dsName='',value=[]){
               padding: { top: 30, left: 0, right: 0, bottom: 0 }
             }
           }
-    
+
+        },
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: xlabel[0] + '~' + xlabel[xlabel.length - 1],
+          }
         }
-    
       },
     };
-    
-     mychart = new Chart(ctx, initdataset);
-    
-    
+
+    mychart = new Chart(ctx, initdataset);
+    console.log('Success create chart');
     console.log(mychart.data);
-    
 
-
-
-    
-  }else{
+  } else {//no pass data
 
     initdataset = {
       type: 'line',
@@ -159,7 +155,7 @@ function init(xlabel=[],dsName='',value=[]){
             title: {
               display: true,
               text: 'Time',
-              color: '#911',
+              color: '#000066',
               font: {
                 family: 'Comic Sans MS',
                 size: 20,
@@ -175,9 +171,9 @@ function init(xlabel=[],dsName='',value=[]){
             title: {
               display: true,
               text: 'Km/hr',
-              color: '#191',
+              color: '#000066',
               font: {
-                family: 'Times',
+                family: 'Comic Sans MS',
                 size: 20,
                 style: 'normal',
                 lineHeight: 1.2
@@ -185,18 +181,18 @@ function init(xlabel=[],dsName='',value=[]){
               padding: { top: 30, left: 0, right: 0, bottom: 0 }
             }
           },
-    
+
           y1: {
             display: true,
             position: 'right',
-            max:100,
-            min:0,
+            max: 100,
+            min: 0,
             title: {
               display: true,
               text: '%',
-              color: '#191',
+              color: '#000066',
               font: {
-                family: 'Times',
+                family: 'Comic Sans MS',
                 size: 20,
                 style: 'normal',
                 lineHeight: 1.2
@@ -204,21 +200,24 @@ function init(xlabel=[],dsName='',value=[]){
               padding: { top: 30, left: 0, right: 0, bottom: 0 }
             }
           }
-    
+
+        },
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'empty chart',
+          }
         }
-    
+
       },
     };
-    
-     mychart = new Chart(ctx, initdataset);
-    
-    
+
+    mychart = new Chart(ctx, initdataset);
     console.log('create empty chart. please use addData/Dataset func to add Data');
-    
 
-
-
-    
   }
 
 }
@@ -230,9 +229,8 @@ function init(xlabel=[],dsName='',value=[]){
 
 
 //---------------------------
-function clearChart(){
+function clearChart() {
   mychart.destroy();
-  
 }
 
 
@@ -253,7 +251,7 @@ function addData(xlabel, num) {
 
 
 
-function addDataset(dsName, value, dsColor, dsBgColor,yAxisID) {
+function addDataset(dsName, value, dsColor, dsBgColor, yAxisID) {
 
 
   const newDataset = {
@@ -267,7 +265,7 @@ function addDataset(dsName, value, dsColor, dsBgColor,yAxisID) {
   mychart.data.datasets.push(newDataset);
   mychart.update();
 
-  console.log('新增', mychart.data);
+  console.log('addDataset:', mychart.data);
 
 }
 
